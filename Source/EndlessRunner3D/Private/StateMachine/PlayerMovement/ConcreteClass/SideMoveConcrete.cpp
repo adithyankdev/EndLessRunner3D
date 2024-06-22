@@ -20,7 +20,7 @@ void SideMoveConcrete::EnterState(ARunningPlayer* Player, UWorld* World)
 	//float val = InputValue.Get<FInputActionValue::Axis1D>();
 	if (Player->LatestSideWayDirection > 0 and CurrentLane < TotalNumberOfLane)
 	{
-		float TargetPosition = Player->GetActorLocation().Y + LaneWidth;
+		float TargetPosition = Player->GetActorLocation().Y - LaneWidth;
 		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
 		Player->SetActorLocation(NewLocation);
 		CurrentLane++;
@@ -29,7 +29,7 @@ void SideMoveConcrete::EnterState(ARunningPlayer* Player, UWorld* World)
 	}
 	else if (Player->LatestSideWayDirection < 0 and (CurrentLane > 1))
 	{
-		float  TargetPosition = Player->GetActorLocation().Y - LaneWidth;
+		float  TargetPosition = Player->GetActorLocation().Y + LaneWidth;
 		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition , Player->GetActorLocation().Z };
 		Player->SetActorLocation(NewLocation);
 		CurrentLane--;

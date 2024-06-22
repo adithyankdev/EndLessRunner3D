@@ -7,7 +7,7 @@
 AFloorLane::AFloorLane()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	NumberOfLane = 5;
 	LaneWidth = 60.0f;
