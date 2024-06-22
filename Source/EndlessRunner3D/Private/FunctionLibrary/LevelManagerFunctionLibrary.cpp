@@ -30,6 +30,7 @@ void ULevelManagerFunctionLibrary::SetLevelInfoOnPlayer(AFloorLane* FloorLane, i
 		PlayerCurrentLane = (FloorLane->NumberOfLane / 2) + 1;
 		PlayerLaneWidth = FloorLane->LaneWidth;
 		PlayerNumberOfLane = FloorLane->NumberOfLane;
+
 	}
 }
 

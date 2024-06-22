@@ -25,7 +25,6 @@ public:
 	float LaneWidth;
 
 
-
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
 
 	void GetLvlValue(UWorld* World);

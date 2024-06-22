@@ -7,6 +7,7 @@
 
 SideMoveConcrete::SideMoveConcrete()
 {
+	bGetlvlTrigger = true;
 }
 
 SideMoveConcrete::~SideMoveConcrete()
@@ -33,7 +34,7 @@ void SideMoveConcrete::EnterState(ARunningPlayer* Player, UWorld* World)
 		Player->SetActorLocation(NewLocation);
 		CurrentLane--;
 		FString D = "Triggered";
-		UKismetSystemLibrary::PrintString(World, D);
+		UKismetSystemLibrary::PrintString(World, D,true,true,FLinearColor::Red);
 	}
 }
 
@@ -41,4 +42,7 @@ void SideMoveConcrete::GetLvlValue(UWorld* World)
 {
 	AFloorLane* FloorLane = ULevelManagerFunctionLibrary::GetLevelManager(World);
 	ULevelManagerFunctionLibrary::SetLevelInfoOnPlayer(FloorLane, CurrentLane, LaneWidth, TotalNumberOfLane);
+
+	FString D = FString::FromInt(LaneWidth);
+	UKismetSystemLibrary::PrintString(World, D, true, true, FLinearColor::Yellow);
 }
