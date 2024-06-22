@@ -37,8 +37,8 @@ void AMovingFloorTile::GetLvlManagerValue()
 
 void AMovingFloorTile::MoveFunction(float DeltaTime)
 {
-	FVector ChangeInLoc = (GetOwner()->GetActorForwardVector() * LvlSpwanSpeed) * DeltaTime;
-	GetOwner()->AddActorLocalOffset(ChangeInLoc, false);
+	FVector ChangeInLoc = (GetActorForwardVector() * LvlSpwanSpeed) * DeltaTime;
+	AddActorLocalOffset(ChangeInLoc, false);
 }
 
 

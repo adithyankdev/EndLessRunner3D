@@ -11,7 +11,7 @@ AFloorLane::AFloorLane()
 
 	NumberOfLane = 5;
 	LaneWidth = 60.0f;
-	LevelSpwanningSpeed = 5;
+	LevelSpwanningSpeed = 50;
 }
 
 // Called when the game starts or when spawned
