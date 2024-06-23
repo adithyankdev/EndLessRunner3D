@@ -31,12 +31,18 @@ ARunningPlayer::ARunningPlayer()
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
 	SideMovetState = new SideMoveConcrete();
+
 }
 
 // Called when the game starts or when spawned
 void ARunningPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (ARunningPlayerController* Contrl = Cast<ARunningPlayerController>(GetController()))
+	{
+		PossessedBy(Contrl);
+	}
 	
 }
 
@@ -58,7 +64,7 @@ void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	/*UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	ARunningPlayerController* PlayerController = Cast<ARunningPlayerController>(Controller);
 
 	check(EnhancedInputComp and PlayerController)
@@ -76,6 +82,6 @@ void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 				Subsystem->AddMappingContext(PlayerController->PlayerMappingContext, 0);
 			}
 		}
-	}
+	}*/
 }
 
