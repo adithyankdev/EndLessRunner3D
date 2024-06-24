@@ -4,6 +4,7 @@
 #include "FunctionLibrary/LevelManagerFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/SideMoveConcrete.h"
+#include "Engine/World.h"
 
 
 
@@ -38,5 +39,19 @@ void ULevelManagerFunctionLibrary::SwitchPlayerState(AbstractClass* NextState, A
 {
 	CurrentState = NextState;
 	CurrentState->EnterState(Player, World);
+	LineTraceCheck(World, Player);
+}
+
+bool ULevelManagerFunctionLibrary::LineTraceCheck(UWorld* World, ARunningPlayer* Player)
+{
+    //if (bImpulseCaluculation)
+	//{
+		
+
+	//	bImpulseCaluculation = false;
+	//}
+	
+//	if (OnGround)Player->BoxComp->AddImpulse(FORCE);
+	return false;
 }
 

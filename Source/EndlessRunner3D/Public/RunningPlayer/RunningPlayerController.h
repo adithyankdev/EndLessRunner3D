@@ -22,5 +22,8 @@ public:
 
 	UPROPERTY()
 	class UInputAction* MoveInput;
+
+	UPROPERTY()
+	class UInputAction* JumpInput;
 	
 };

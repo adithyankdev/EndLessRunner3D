@@ -9,11 +9,13 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 #include "RunningPlayer.generated.h"
 
 //class UArrowComponent;
 class AbstractClass;
 class SideMoveConcrete;
+class JumpConcrete;
 
 UCLASS()
 class ENDLESSRUNNER3D_API ARunningPlayer : public APawn
@@ -42,6 +44,8 @@ protected:
 
 	AbstractClass* CurrentState;
 	SideMoveConcrete* SideMovetState;
+	JumpConcrete* JumpState;
+	
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -54,8 +58,32 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* Movement;
 
+	bool isjump;
 
 	UFUNCTION()
 	void MoveAction(const struct FInputActionValue& InputValue);
+	UFUNCTION()
+	void JumpAction(const struct FInputActionValue& InputValue);
+
+	UPROPERTY(EditAnywhere)
+	float JumpHeight;
+
+	UPROPERTY(EditAnywhere)
+	float Gravity;
+
+	FVector JumpVelocity;
+	bool bIsJumping;
+
+	FTimerHandle JumpTimerHandle;
+
+	void ApplyGravity();
+	void StopJumping();
+	bool IsOnGround();
+	float speed;
+
+	//Checking How many times the apply grvity call -> around 98 times 
+	int count;
+
+	
 
 };
