@@ -58,31 +58,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* Movement;
 
-	bool isjump;
-
 	UFUNCTION()
 	void MoveAction(const struct FInputActionValue& InputValue);
 	UFUNCTION()
 	void JumpAction(const struct FInputActionValue& InputValue);
 
-	UPROPERTY(EditAnywhere)
-	float JumpHeight;
 
-	UPROPERTY(EditAnywhere)
-	float Gravity;
 
-	FVector JumpVelocity;
-	bool bIsJumping;
 
-	FTimerHandle JumpTimerHandle;
-
-	void ApplyGravity();
-	void StopJumping();
-	bool IsOnGround();
-	float speed;
-
-	//Checking How many times the apply grvity call -> around 98 times 
-	int count;
 
 	
 

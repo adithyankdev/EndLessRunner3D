@@ -37,11 +37,9 @@ void ULevelManagerFunctionLibrary::SetLevelInfoOnPlayer(AFloorLane* FloorLane, i
 
 void ULevelManagerFunctionLibrary::SwitchPlayerState(AbstractClass* NextState, AbstractClass* CurrentState, ARunningPlayer* Player, UWorld* World)
 {
-	if (CurrentState != NextState)
-	{
+	
 		CurrentState = NextState;
 		CurrentState->EnterState(Player, World);
-	}
 
 }
 
