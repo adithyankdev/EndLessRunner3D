@@ -27,8 +27,21 @@ public:
 	//FVector End;
 	//ECollisionChannel TraceChannel;
 	//FCollisionQueryParams Params;
+private:
+	FTimerHandle ApplyGravityTimer;
+
+	ARunningPlayer* MainPlayer;
+	UWorld* GetWorld;
+
+	bool bIsJumping;
+	FVector JumpVelocity;
+	float JumpHeight;
+	float Gravity;
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World)override;
+
+	virtual void ApplyGravity(ARunningPlayer* Player, UWorld* World);
+	virtual void StopJumping(ARunningPlayer* Player, UWorld* World);
 
 
 };

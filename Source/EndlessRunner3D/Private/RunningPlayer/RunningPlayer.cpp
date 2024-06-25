@@ -84,10 +84,11 @@ void ARunningPlayer::MoveAction(const FInputActionValue& InputValue)
 
 void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
 {
-	
+	bool Onjump = ULevelManagerFunctionLibrary::LineTraceCheck(GetWorld(), this);
 
-	if (IsOnGround())
+	if (Onjump)
 	{
+		ULevelManagerFunctionLibrary::SwitchPlayerState(JumpState, CurrentState, this, GetWorld());
 		/*float forcedepth = 500.0f;
 		FVector FORCE = FVector{0.0f,0.0f,forcedepth};
 		BoxComp->AddImpulse(FORCE,NAME_None,true);*/

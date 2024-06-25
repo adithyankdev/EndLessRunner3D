@@ -37,21 +37,25 @@ void ULevelManagerFunctionLibrary::SetLevelInfoOnPlayer(AFloorLane* FloorLane, i
 
 void ULevelManagerFunctionLibrary::SwitchPlayerState(AbstractClass* NextState, AbstractClass* CurrentState, ARunningPlayer* Player, UWorld* World)
 {
-	CurrentState = NextState;
-	CurrentState->EnterState(Player, World);
-	LineTraceCheck(World, Player);
+	if (CurrentState != NextState)
+	{
+		CurrentState = NextState;
+		CurrentState->EnterState(Player, World);
+	}
+
 }
 
 bool ULevelManagerFunctionLibrary::LineTraceCheck(UWorld* World, ARunningPlayer* Player)
 {
-    //if (bImpulseCaluculation)
-	//{
-		
+	FHitResult Hit;
+	FVector Start = Player->DirectionArrow->GetComponentLocation();
+	FVector End = Start - FVector(0.0f, 0.0f, 50.0f);
+	ECollisionChannel TraceChannel = ECC_Visibility;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(Player);
 
-	//	bImpulseCaluculation = false;
-	//}
-	
-//	if (OnGround)Player->BoxComp->AddImpulse(FORCE);
-	return false;
+	bool OnGround =World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel, Params);
+	DrawDebugLine(World, Start, End, FColor::Red, false, 1, 0, 1);
+	return OnGround;
 }
 
