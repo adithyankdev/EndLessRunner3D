@@ -7,17 +7,23 @@
 #include "RunningPlayer/RunningPlayerController.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "FunctionLibrary/LevelManagerFunctionLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "GameBase/FloorLane.h"
+//Movement StateMachines Header.........
 #include "StateMachine/PlayerMovement/ConcreteClass/SideMoveConcrete.h"
+#include "StateMachine/PlayerMovement/ConcreteClass/JumpConcrete.h"
 
 
 // Sets default values
 ARunningPlayer::ARunningPlayer()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+ 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.....
+	PrimaryActorTick.bCanEverTick = true;
 
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
-	SetRootComponent(BoxComp);
+	RootComponent = BoxComp;
+	BoxComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BoxComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -31,45 +37,59 @@ ARunningPlayer::ARunningPlayer()
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
 	SideMovetState = new SideMoveConcrete();
-
+	JumpState = new JumpConcrete();
+	
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when spawned......
 void ARunningPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ARunningPlayerController* Contrl = Cast<ARunningPlayerController>(GetController()))
-	{
-		PossessedBy(Contrl);
-	}
-	
+	 AFloorLane* Flr =  ULevelManagerFunctionLibrary::GetLevelManager(GetWorld());
+
 }
 
-// Called every frame
+// Called every frame.....
 void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FVector ChangeInLoc = (GetActorForwardVector() * -50) * DeltaTime;
+	AddActorLocalOffset(ChangeInLoc, false);
+	DrawDebugLine(GetWorld(), GetActorLocation() ,GetActorLocation() + DirectionArrow->GetUpVector()*-1200, FColor::Red, true);
+
 
 }
 
 void ARunningPlayer::MoveAction(const FInputActionValue& InputValue)
 {
 	LatestSideWayDirection = InputValue.Get<FInputActionValue::Axis1D>();
-	ULevelManagerFunctionLibrary::SwitchPlayerState(SideMovetState, CurrentState, this, GetWorld());
+	
+		ULevelManagerFunctionLibrary::SwitchPlayerState(SideMovetState, CurrentState, this, GetWorld());
+	
+	 
 }
 
+void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
+{
+	if (ULevelManagerFunctionLibrary::LineTraceCheck(GetWorld(), this))
+	{
+		ULevelManagerFunctionLibrary::SwitchPlayerState(JumpState, CurrentState, this, GetWorld());
+	}
+	
+}
 // Called to bind functionality to input
 void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	/*UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	ARunningPlayerController* PlayerController = Cast<ARunningPlayerController>(Controller);
 
 	check(EnhancedInputComp and PlayerController)
 	{
 		EnhancedInputComp->BindAction(PlayerController->MoveInput, ETriggerEvent::Started, this, &ARunningPlayer::MoveAction);
+		EnhancedInputComp->BindAction(PlayerController->JumpInput, ETriggerEvent::Completed, this, &ARunningPlayer::JumpAction);
 
 		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 		check(LocalPlayer)
@@ -82,6 +102,6 @@ void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 				Subsystem->AddMappingContext(PlayerController->PlayerMappingContext, 0);
 			}
 		}
-	}*/
+	}
 }
 

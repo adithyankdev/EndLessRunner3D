@@ -22,6 +22,7 @@ public:
 	static AFloorLane* GetLevelManager(UWorld* GetWorld);
 	static void SetLevelInfoOnPlayer(AFloorLane* FloorLane, int& PlayerCurrentLane, float& PlayerLaneWidth, int& PlayerNumberOfLane);
 	static void SwitchPlayerState(AbstractClass* NextState, AbstractClass* CurrentState, class ARunningPlayer* Player, UWorld* World);
+	static bool LineTraceCheck(UWorld* World, class ARunningPlayer* Player);
 
 
 };

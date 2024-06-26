@@ -4,10 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "RunningPlayer/RunningPlayer.h"
 #include "RunningPlayerController.generated.h"
-
-//class ARunningPlayer;
 
 /**
  * 
@@ -26,8 +23,7 @@ public:
 	UPROPERTY()
 	class UInputAction* MoveInput;
 
-	virtual void BeginPlay() override; 
+	UPROPERTY()
+	class UInputAction* JumpInput;
 	
-	ARunningPlayer* PlayerCharacter;
-
 };
