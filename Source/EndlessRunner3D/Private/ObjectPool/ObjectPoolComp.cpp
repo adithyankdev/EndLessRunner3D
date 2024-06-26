@@ -50,9 +50,14 @@ void UObjectPoolComp::InitializePool()
 						if (CompOwner)
 						{
 							LatestRearFloor  =  UseFromPool(CompOwner->GetActorLocation());
-							QuickSpwanCount++;
-							
+							QuickSpwanCount++;	
 						}
+					}
+					else
+					{
+						FVector Loc = LatestRearFloor->GetActorLocation();
+						LatestRearFloor = UseFromPool(FVector(Loc.X-SingleTileSize, Loc.Y, Loc.Z));
+
 					}
 					
 
