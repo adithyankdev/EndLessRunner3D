@@ -54,7 +54,8 @@ void ARunningPlayer::BeginPlay()
 void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	FVector ChangeInLoc = (GetActorForwardVector() * -50) * DeltaTime;
+	AddActorLocalOffset(ChangeInLoc, false);
 	DrawDebugLine(GetWorld(), GetActorLocation() ,GetActorLocation() + DirectionArrow->GetUpVector()*-1200, FColor::Red, true);
 
 

@@ -24,18 +24,24 @@ JumpConcrete::~JumpConcrete()
 //State Enter // Player Up Function
 void JumpConcrete::EnterState(ARunningPlayer* Player, UWorld* World) 
 {
-    bool bHitGround = ULevelManagerFunctionLibrary::LineTraceCheck(World, Player);
+   
 
-    if (bHitGround)
-    {                                                                                                          
-                                                                                                         // SetActor To MidAir , Give Effect Of Jump .....
-        JumpVelocity.Z = JumpHeight;
+    bool bHitGround = ULevelManagerFunctionLibrary::LineTraceCheck(World, Player);
+ //   PlayerGroundLoc = Player->GetActorLocation().Z;
+
+    if (bHitGround and !bIsJumping)
+    {                    
+        bIsJumping = true;
+        FVector F = FVector{ 0.0f,0.0f,500.0f };
+        Player->BoxComp->AddImpulse(F, NAME_None, true);
+        // SetActor To MidAir , Give Effect Of Jump .....
+      /*  JumpVelocity.Z = JumpHeight;
         bIsJumping = true;
         FVector NewLocation = Player->GetActorLocation() + FVector(0.0f, 0.0f, JumpHeight * 0.13f);
         Player->SetActorLocation(NewLocation);
 
-        // Start the gravity application timer
-        World->GetTimerManager().SetTimer(ApplyGravityTimer, [this, Player, World]() { this->ApplyGravity(Player, World); }, 0.01f, true);
+        // Start the gravity application timer*/
+        World->GetTimerManager().SetTimer(ApplyGravityTimer, [this,World]() { this->StopJumping(World); }, 1.3f, true);
     }
 }
 
@@ -56,20 +62,14 @@ void JumpConcrete::ApplyGravity(ARunningPlayer* Player, UWorld* World)
         bool bHitGround = ULevelManagerFunctionLibrary::LineTraceCheck(World, Player);
         if (bHitGround && JumpVelocity.Z <= 0.0f)
         {
-            StopJumping(Player, World);
+        //    StopJumping(Player, World);
         }
     }
 }
 //Function For Stop Applying the Fall Velocity..
-void JumpConcrete::StopJumping(ARunningPlayer* Player, UWorld* World) // Stoping The Applying Gravity 
+void JumpConcrete::StopJumping(UWorld* World) // Stoping The Applying Gravity 
 {
     bIsJumping = false;
-    JumpVelocity = FVector::ZeroVector;
     World->GetTimerManager().ClearTimer(ApplyGravityTimer);
-
-    // Snap player to the ground to ensure they don't sink into the surface
-    FVector GroundLocation = Player->GetActorLocation();
-    GroundLocation.Z = 1436.625;//Give A Default GroundPostion;                                    //Making Sure No Glitches May Occur After The Jumping...
-    Player->SetActorLocation(GroundLocation);
 
 }
