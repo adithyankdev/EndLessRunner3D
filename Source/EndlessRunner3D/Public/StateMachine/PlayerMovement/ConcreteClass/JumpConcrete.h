@@ -18,18 +18,13 @@ public:
 
 private:
 
-	//Timer For Handling ApplyGravity to Player...
+	//Timer For Handling Reset Jump...
 	FTimerHandle ApplyGravityTimer;
 
 	
 	bool bIsJumping;
-	FVector JumpVelocity;
-	float JumpHeight;
-	float Gravity;
-	float PlayerGroundLoc;
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World)override;
-	virtual void ApplyGravity(ARunningPlayer* Player, UWorld* World);
 	virtual void StopJumping(UWorld* World);
 
 
