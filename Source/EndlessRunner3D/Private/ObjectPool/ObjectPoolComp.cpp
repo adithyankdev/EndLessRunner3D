@@ -1,34 +1,86 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ObjectPool/ObjectPoolComp.h"
+#include "ObjectPool/PoolActor.h"
+#include "Kismet/KismetSystemLibrary.h"
 
-// Sets default values for this component's properties
 UObjectPoolComp::UObjectPoolComp()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+
+	QuickSpwanCount = 2;
+    PoolSize = 5;
 }
 
 
-// Called when the game starts
 void UObjectPoolComp::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	InitializePool();
 	
 }
 
 
-// Called every frame
+
+void UObjectPoolComp::InitializePool()
+{
+	FActorSpawnParameters SpawnParams;
+	AActor* CompOwner = GetOwner();
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	for (int itr = 0; itr < PoolSize; itr++)
+	{
+		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+
+		if(SpawnActor)
+		{
+			PoolActorArray.AddUnique(SpawnActor);          
+
+				if (PoolActorArray.Num() < QuickSpwanCount)
+				{  
+				  
+					if (PoolActorArray.Num() == 1)
+					{
+						FVector Origin;
+						FVector BoxExtent;
+						SpawnActor->GetActorBounds(false,Origin,BoxExtent);
+						SingleTileSize = BoxExtent.X * 2.0f; 
+
+						if (CompOwner)
+						{
+							LatestRearFloor  =  UseFromPool(CompOwner->GetActorLocation());
+							QuickSpwanCount++;
+							
+						}
+					}
+					
+
+				}
+				
+			 
+
+			
+		}
+
+	}
+}
+
+AActor* UObjectPoolComp::UseFromPool(FVector UseLocation)
+{
+
+
+	return nullptr;
+}
+
+AActor* UObjectPoolComp::GetNotUseActor()
+{
+	return nullptr;
+}
+
 void UObjectPoolComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
 }
 

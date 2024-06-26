@@ -3,6 +3,7 @@
 
 #include "ObjectPool/PoolActor.h"
 #include "TimerManager.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 APoolActor::APoolActor()
@@ -29,12 +30,13 @@ void APoolActor::SetInUse(bool InUse)
 
 void APoolActor::SetNotUse()
 {
-	SetInUse(true);
+	SetInUse(false);
 }
 
 void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	
 }
 

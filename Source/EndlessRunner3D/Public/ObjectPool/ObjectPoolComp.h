@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "ObjectPoolComp.generated.h"
 
+class APoolActor;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ENDLESSRUNNER3D_API UObjectPoolComp : public UActorComponent
@@ -13,15 +13,41 @@ class ENDLESSRUNNER3D_API UObjectPoolComp : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UObjectPoolComp();
 
-protected:
-	// Called when the game starts
+public:
+
+	UPROPERTY(BlueprintReadWrite , EditDefaultsOnly , Category = "ObjectPool Base")
+	TSubclassOf<AActor>PoolActorClass;
+
+	UPROPERTY()
+	TArray<AActor*>PoolActorArray;
+
+	UPROPERTY()
+	int PoolSize;
+
+	UPROPERTY()
+	float SingleTileSize;
+
+	UPROPERTY()
+	AActor* LatestRearFloor;
+
+	UPROPERTY()
+	int QuickSpwanCount;
+
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+
+	UFUNCTION()
+	void InitializePool();
+
+	UFUNCTION()
+	AActor* UseFromPool(FVector UseLocation);
+
+	UFUNCTION()
+	AActor* GetNotUseActor();
+
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 		
