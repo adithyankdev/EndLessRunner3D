@@ -54,7 +54,7 @@ void ARunningPlayer::BeginPlay()
 void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FVector ChangeInLoc = (GetActorForwardVector() * -50) * DeltaTime;
+	FVector ChangeInLoc = (GetActorForwardVector() * 250) * DeltaTime;
 	AddActorLocalOffset(ChangeInLoc, false);
 	DrawDebugLine(GetWorld(), GetActorLocation() ,GetActorLocation() + DirectionArrow->GetUpVector()*-1200, FColor::Red, true);
 
@@ -86,17 +86,17 @@ void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	ARunningPlayerController* PlayerController = Cast<ARunningPlayerController>(Controller);
 
-	check(EnhancedInputComp and PlayerController)
+	if(EnhancedInputComp and PlayerController)
 	{
 		EnhancedInputComp->BindAction(PlayerController->MoveInput, ETriggerEvent::Started, this, &ARunningPlayer::MoveAction);
 		EnhancedInputComp->BindAction(PlayerController->JumpInput, ETriggerEvent::Completed, this, &ARunningPlayer::JumpAction);
 
 		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
-		check(LocalPlayer)
+		if(LocalPlayer)
 		{
 			UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 
-			check(Subsystem)
+			if(Subsystem)
 			{
 				Subsystem->ClearAllMappings();
 				Subsystem->AddMappingContext(PlayerController->PlayerMappingContext, 0);

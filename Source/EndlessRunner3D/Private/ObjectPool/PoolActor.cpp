@@ -6,12 +6,14 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 
+
 APoolActor::APoolActor()
 {
  
 	PrimaryActorTick.bCanEverTick = true;
-
+	TimeToLive = 60.0f;
 }
+
 
 
 void APoolActor::SetInUse(bool InUse)
@@ -24,7 +26,7 @@ void APoolActor::SetInUse(bool InUse)
 	GetWorld()->GetTimerManager().ClearTimer(StopUsingTimer);
 	if (InUse)
 	{
-		GetWorld()->GetTimerManager().SetTimer(StopUsingTimer, this, &APoolActor::SetNotUse, 5);
+		GetWorld()->GetTimerManager().SetTimer(StopUsingTimer, this, &APoolActor::SetNotUse, TimeToLive);
 	}
 }
 
@@ -36,7 +38,7 @@ void APoolActor::SetNotUse()
 void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetInUse(false);
 	
 }
 
@@ -47,3 +49,15 @@ void APoolActor::Tick(float DeltaTime)
 
 }
 
+
+//Interface Functions ... 
+
+bool APoolActor::ActorInUse()
+{
+	return CurrentlyUse;
+}
+
+void APoolActor::TriggerActorInUse()
+{
+	SetInUse(true);
+}

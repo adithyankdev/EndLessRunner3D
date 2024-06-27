@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Interfaces/ActorPoolMembers.h"
 #include "ObjectPoolComp.generated.h"
 
 class APoolActor;
@@ -13,11 +14,9 @@ class ENDLESSRUNNER3D_API UObjectPoolComp : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UObjectPoolComp();
+	UObjectPoolComp();	
 
-public:
-
-	UPROPERTY(BlueprintReadWrite , EditDefaultsOnly , Category = "ObjectPool Base")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "ObjectPool Base")
 	TSubclassOf<AActor>PoolActorClass;
 
 	UPROPERTY()
@@ -26,7 +25,7 @@ public:
 	UPROPERTY()
 	int PoolSize;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly , EditAnywhere)
 	float SingleTileSize;
 
 	UPROPERTY()
@@ -35,18 +34,27 @@ public:
 	UPROPERTY()
 	int QuickSpwanCount;
 
-	virtual void BeginPlay() override;
+protected:
 
-public:	
+
+	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	void InitializePool();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	AActor* UseFromPool(FVector UseLocation);
 
 	UFUNCTION()
 	AActor* GetNotUseActor();
+
+   //HelperFunctions
+	UFUNCTION()
+	void UpdateLatestRearFloor();
+
+	UFUNCTION()
+	void InitializeFirstActor(AActor* SpawnActor);
+
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

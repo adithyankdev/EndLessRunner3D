@@ -4,16 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/ActorPoolMembers.h"
 #include "PoolActor.generated.h"
 
 UCLASS()
-class ENDLESSRUNNER3D_API APoolActor : public AActor
+class ENDLESSRUNNER3D_API APoolActor : public AActor , public IActorPoolMembers
 {
 	GENERATED_BODY()
 	
 public:	
 	
 	APoolActor();
+
+	virtual bool ActorInUse()override;
+	virtual void TriggerActorInUse()override;
 
 protected:
     
